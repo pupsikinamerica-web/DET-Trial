@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DET Trial Lesson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1714;
+    --ink2: #5a5550;
+    --ink3: #9a928a;
+    --paper: #faf8f4;
+    --paper2: #f2ede5;
+    --paper3: #e8e0d4;
+    --accent: #c8541a;
+    --accent2: #e8a87c;
+    --green: #2d6a4f;
+    --green-light: #d8f3dc;
+    --blue: #1a3c6e;
+    --blue-light: #dbeafe;
+    --purple: #4a3580;
+    --purple-light: #ede9fe;
+    --gold: #b07d2a;
+    --gold-light: #fef3c7;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: rgba(250,248,244,0.98);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--paper3);
+    padding: 0 2rem;
+    padding-top: env(safe-area-inset-top, 0px);
+    height: calc(56px + env(safe-area-inset-top, 0px));
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-bottom: 10px;
+  }
+
+  .nav-brand {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .nav-brand span { color: var(--accent); }
+
+  .nav-steps {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--paper3);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-dot.active { background: var(--accent); transform: scale(1.3); }
+  .nav-dot.done { background: var(--ink3); }
+
+  .nav-timer {
+    font-size: 13px;
+    color: var(--ink3);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.03em;
+  }
+
+  /* HERO */
+  .hero {
+    padding: calc(80px + env(safe-area-inset-top, 0px)) 2rem 80px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    border: 1px solid var(--accent2);
+    background: #fef4ee;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+  }
+
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(42px, 7vw, 72px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    color: var(--ink2);
+    max-width: 480px;
+    line-height: 1.65;
+    margin-bottom: 40px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--ink2);
+  }
+
+  .meta-icon {
+    width: 28px; height: 28px;
+    background: var(--paper2);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .start-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 400;
+    padding: 12px 24px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    margin-top: 36px;
+  }
+  .start-btn:hover { background: var(--accent); transform: translateY(-1px); }
+
+  /* DIVIDER */
+  .divider {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    border-top: 1px solid var(--paper3);
+  }
+
+  /* SECTIONS */
+  .section {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 64px 2rem;
+    border-top: 1px solid var(--paper3);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+
+  .section-num {
+    font-family: var(--serif);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--ink3);
+    text-transform: uppercase;
+    padding-top: 6px;
+    min-width: 32px;
+  }
+
+  .section-title-wrap { flex: 1; }
+
+  .section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-bottom: 8px;
+  }
+
+  .badge-blue { background: var(--blue-light); color: var(--blue); }
+  .badge-green { background: var(--green-light); color: var(--green); }
+  .badge-purple { background: var(--purple-light); color: var(--purple); }
+  .badge-gold { background: var(--gold-light); color: var(--gold); }
+  .badge-gray { background: var(--paper2); color: var(--ink2); }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 36px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .section-time {
+    font-size: 12px;
+    color: var(--ink3);
+    margin-top: 4px;
+  }
+
+  .section-desc {
+    font-size: 15px;
+    color: var(--ink2);
+    line-height: 1.7;
+    margin-bottom: 28px;
+    padding-left: 52px;
+  }
+
+  /* TASK CARD */
+  .task-card {
+    background: var(--paper);
+    border: 1px solid var(--paper3);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .task-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: var(--paper2);
+    border-bottom: 1px solid var(--paper3);
+  }
+
+  .task-card-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--ink3);
+  }
+
+  .task-card-body {
+    padding: 20px 22px;
+  }
+
+  .task-text {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+
+  .task-text.large {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+  }
+
+  /* Fill blank input styling */
+  .blank-input {
+    display: inline-block;
+    border: none;
+    border-bottom: 2px solid var(--accent2);
+    background: transparent;
+    font-family: var(--sans);
+    font-size: 16px;
+    color: var(--accent);
+    font-weight: 500;
+    width: 40px;
+    text-align: center;
+    outline: none;
+    margin: 0 2px;
+    padding: 0 2px;
+    transition: border-color 0.2s;
+  }
+  .blank-input:focus { border-color: var(--accent); }
+  .blank-input.correct { border-color: var(--green); color: var(--green); }
+  .blank-input.wrong { border-color: #dc2626; color: #dc2626; }
+
+  .check-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 400;
+    padding: 9px 20px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.2s;
+  }
+  .check-btn:hover { background: var(--green); }
+
+  .answer-reveal {
+    display: none;
+    margin-top: 16px;
+    padding: 14px 18px;
+    background: var(--green-light);
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--green);
+    line-height: 1.65;
+  }
+  .answer-reveal.show { display: block; }
+  .answer-reveal strong { font-weight: 500; }
+
+  /* QUESTIONS grid */
+  .questions-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Timer widget */
+  .timer-widget {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--paper2);
+    border: 1px solid var(--paper3);
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin-top: 20px;
+  }
+
+  .timer-display {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  .timer-label { font-size: 12px; color: var(--ink3); }
+
+  .timer-btn {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 100px;
+    padding: 8px 18px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: var(--sans);
+    transition: all 0.2s;
+  }
+  .timer-btn:hover { background: var(--accent); }
+  .timer-btn.running { background: #dc2626; }
+
+  /* Progress bar */
+  .progress-bar-wrap {
+    height: 3px;
+    background: var(--paper3);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 10px;
+    transition: width 1s linear;
+  }
+
+  /* Speaking prep box */
+  .speaking-card {
+    border: 1px solid var(--paper3);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .speaking-question {
+    padding: 28px 28px 24px;
+    background: var(--paper);
+  }
+
+  .speaking-q-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--ink3);
+    margin-bottom: 12px;
+  }
+
+  .speaking-q-text {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .speaking-footer {
+    background: var(--paper2);
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-top: 1px solid var(--paper3);
+    flex-wrap: wrap;
+  }
+
+  /* Tip box */
+  .tip-box {
+    display: flex;
+    gap: 12px;
+    padding: 14px 18px;
+    background: var(--gold-light);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    margin-top: 20px;
+  }
+  .tip-box-icon { font-size: 16px; flex-shrink: 0; padding-top: 2px; }
+  .tip-box-text { font-size: 13px; color: var(--gold); line-height: 1.6; }
+
+  /* FOOTER */
+  footer {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 2rem 60px;
+    border-top: 1px solid var(--paper3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+    gap: 16px;
+  }
+
+  .footer-brand {
+    font-family: var(--serif);
+    font-size: 14px;
+    color: var(--ink3);
+  }
+
+  .footer-note {
+    font-size: 12px;
+    color: var(--ink3);
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section { animation: fadeUp 0.5s ease both; }
+
+  /* Read aloud highlight */
+  .read-aloud-text {
+    font-family: var(--serif);
+    font-size: 21px;
+    font-weight: 300;
+    line-height: 1.7;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    padding: 24px 0;
+  }
+
+  .word-btn {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.15s;
+    padding: 0 1px;
+  }
+  .word-btn:hover { background: var(--accent2); }
+  .word-btn.highlighted { background: #fde68a; }
+
+  /* Debrief checkboxes */
+  .debrief-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .debrief-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1px solid var(--paper3);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--paper);
+  }
+  .debrief-item:hover { border-color: var(--ink3); }
+  .debrief-item.checked { border-color: var(--green); background: var(--green-light); }
+
+  .debrief-check {
+    width: 20px; height: 20px;
+    border: 1.5px solid var(--paper3);
+    border-radius: 6px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: all 0.2s;
+    color: transparent;
+  }
+  .debrief-item.checked .debrief-check {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+
+  .debrief-text { font-size: 15px; color: var(--ink); }
+
+  /* Score estimator */
+  .score-card {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 16px;
+    padding: 28px 28px;
+    margin-top: 20px;
+  }
+
+  .score-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink3); margin-bottom: 8px; }
+  .score-number {
+    font-family: var(--serif);
+    font-size: 56px;
+    font-weight: 300;
+    letter-spacing: -0.04em;
+    color: var(--accent2);
+    line-height: 1;
+  }
+  .score-sub { font-size: 14px; color: var(--ink3); margin-top: 6px; }
+  .score-range { font-size: 13px; color: var(--ink2); margin-top: 14px; line-height: 1.65; }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 38px; }
+    .section { padding: 48px 1.25rem; }
+    .section-desc { padding-left: 0; }
+    .nav { padding: 0 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">DET <span>Trial</span></span>
+  <div class="nav-steps">
+    <div class="nav-dot active" data-section="0" title="Intro"></div>
+    <div class="nav-dot" data-section="1" title="Read & Complete"></div>
+    <div class="nav-dot" data-section="2" title="Read Aloud"></div>
+    <div class="nav-dot" data-section="3" title="Speaking"></div>
+    <div class="nav-dot" data-section="4" title="Wrap-up"></div>
+  </div>
+  <span class="nav-timer" id="globalTimer">00:00</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="sec-0">
+  <div class="hero-tag">✦ Duolingo English Test</div>
+  <h1>Your trial<br><em>lesson</em> today</h1>
+  <p class="hero-sub">20 minutes, four tasks — a taste of the DET format with live practice and instant feedback.</p>
+  <div class="hero-meta">
+    <div class="meta-item">
+      <div class="meta-icon">⏱</div>
+      <span>20 minutes total</span>
+    </div>
+    <div class="meta-item">
+      <div class="meta-icon">📋</div>
+      <span>4 task types</span>
+    </div>
+    <div class="meta-item">
+      <div class="meta-icon">🎯</div>
+      <span>Target: 130+</span>
+    </div>
+  </div>
+  <a href="#sec-1" class="start-btn">Start lesson →</a>
+</section>
+
+<!-- TASK 1: READ & COMPLETE -->
+<section class="section" id="sec-1">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <div class="section-title-wrap">
+      <div class="section-badge badge-blue">📝 Read & Complete · 4 min</div>
+      <h2 class="section-title">Fill in<br>the missing letters</h2>
+      <div class="section-time">⏱ Minutes 3 – 7</div>
+    </div>
+  </div>
+
+  <p class="section-desc">In the DET, you'll see a passage with words that have missing letters. Type the correct letters in each gap. Every word is scored separately — spelling matters.</p>
+
+  <div class="task-card">
+    <div class="task-card-header">
+      <span class="task-card-label">Task — restore the missing letters</span>
+    </div>
+    <div class="task-card-body">
+      <p class="task-text" id="gapText">
+        The scientist's
+        <span class="gap-word">disc<input class="blank-input" data-answer="o" maxlength="1" placeholder="_">v<input class="blank-input" data-answer="e" maxlength="1" placeholder="_">ry</span>
+        was
+        <span class="gap-word">cons<input class="blank-input" data-answer="i" maxlength="1" placeholder="_">d<input class="blank-input" data-answer="e" maxlength="1" placeholder="_">red</span>
+        <span class="gap-word">gr<input class="blank-input" data-answer="o" maxlength="1" placeholder="_">und-br<input class="blank-input" data-answer="e" maxlength="1" placeholder="_">aking</span>
+        by the academic
+        <span class="gap-word">comm<input class="blank-input" data-answer="u" maxlength="1" placeholder="_">nity</span>,
+        yet it
+        <span class="gap-word">rem<input class="blank-input" data-answer="a" maxlength="1" placeholder="_"><input class="blank-input" data-answer="i" maxlength="1" placeholder="_">ned</span>
+        largely
+        <span class="gap-word">unack<input class="blank-input" data-answer="n" maxlength="1" placeholder="_">wl<input class="blank-input" data-answer="e" maxlength="1" placeholder="_">dged</span>
+        for over a
+        <span class="gap-word">dec<input class="blank-input" data-answer="a" maxlength="1" placeholder="_">de</span>.
+      </p>
+      <button class="check-btn" onclick="checkAnswers()">Check answers ✓</button>
+      <div class="answer-reveal" id="answerReveal">
+        <strong>Full sentence:</strong> The scientist's <strong>discovery</strong> was <strong>considered</strong> <strong>groundbreaking</strong> by the academic <strong>community</strong>, yet it <strong>remained</strong> largely <strong>unacknowledged</strong> for over a <strong>decade</strong>.
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-box-icon">💡</div>
+    <div class="tip-box-text">In the real DET, you type the full missing letter sequence — no blanks shown. The system shows which words are correct in green after submission.</div>
+  </div>
+</section>
+
+<!-- TASK 2: READ ALOUD -->
+<section class="section" id="sec-2">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <div class="section-title-wrap">
+      <div class="section-badge badge-green">🎙 Read Aloud · 4 min</div>
+      <h2 class="section-title">Read the<br>passage aloud</h2>
+      <div class="section-time">⏱ Minutes 7 – 11</div>
+    </div>
+  </div>
+
+  <p class="section-desc">You'll see a text on screen and read it aloud. The DET records your voice and evaluates pronunciation, rhythm, and fluency. You get 30 seconds to prepare before recording starts.</p>
+
+  <div class="task-card">
+    <div class="task-card-header">
+      <span class="task-card-label">Prepare for 30 sec, then read aloud</span>
+    </div>
+    <div class="task-card-body">
+      <p class="read-aloud-text" id="readAloudText">
+        Urban planners increasingly argue that cities designed around pedestrian movement, rather than vehicles, tend to foster stronger community ties and lower rates of social isolation. Several European municipalities have already implemented car-free zones with measurable success.
+      </p>
+    </div>
+  </div>
+
+  <div class="timer-widget">
+    <div>
+      <div class="timer-label">Preparation timer</div>
+      <div class="timer-display" id="readTimer">0:30</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="readProgress" style="width:100%"></div>
+      </div>
+    </div>
+    <button class="timer-btn" id="readTimerBtn" onclick="startReadTimer()">Start prep ▶</button>
+  </div>
+
+  <div class="tip-box" style="margin-top: 16px;">
+    <div class="tip-box-icon">💡</div>
+    <div class="tip-box-text">Focus on: natural sentence rhythm, not word-by-word reading. Pause at commas. The DET algorithm checks if you're reading the actual text — don't paraphrase.</div>
+  </div>
+</section>
+
+<!-- TASK 3: SPEAKING -->
+<section class="section" id="sec-3">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <div class="section-title-wrap">
+      <div class="section-badge badge-purple">🗣 Speaking Sample · 5 min</div>
+      <h2 class="section-title">Speak your<br>answer</h2>
+      <div class="section-time">⏱ Minutes 11 – 16</div>
+    </div>
+  </div>
+
+  <p class="section-desc">This is the closest to the real DET Speaking section. You get 30 seconds to prepare your thoughts, then speak for up to 90 seconds. Aim for clear structure: position → reason → example.</p>
+
+  <div class="questions-grid">
+
+    <div class="speaking-card">
+      <div class="speaking-question">
+        <div class="speaking-q-label">Question 1</div>
+        <p class="speaking-q-text">Do you think remote work has had a positive or negative effect on society overall? Give reasons and examples.</p>
+      </div>
+      <div class="speaking-footer">
+        <div>
+          <div class="timer-label">Prep · 30 sec</div>
+          <div class="timer-display" id="speakTimer1">0:30</div>
+        </div>
+        <button class="timer-btn" id="speakBtn1" onclick="startSpeakTimer(1)">Start prep ▶</button>
+        <div style="margin-left: auto; font-size: 12px; color: var(--ink3);">Then speak for up to 90 sec</div>
+      </div>
+    </div>
+
+    <div class="speaking-card">
+      <div class="speaking-question">
+        <div class="speaking-q-label">Question 2</div>
+        <p class="speaking-q-text">Describe a skill you've learned recently and explain how it changed your perspective.</p>
+      </div>
+      <div class="speaking-footer">
+        <div>
+          <div class="timer-label">Prep · 30 sec</div>
+          <div class="timer-display" id="speakTimer2">0:30</div>
+        </div>
+        <button class="timer-btn" id="speakBtn2" onclick="startSpeakTimer(2)">Start prep ▶</button>
+        <div style="margin-left: auto; font-size: 12px; color: var(--ink3);">Then speak for up to 90 sec</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="tip-box" style="margin-top: 24px;">
+    <div class="tip-box-icon">💡</div>
+    <div class="tip-box-text">DET scores: vocabulary range, grammatical complexity, coherence, and pronunciation. Aim for: one clear position → 2 reasons → 1 concrete example → brief conclusion.</div>
+  </div>
+</section>
+
+<!-- TASK 4: DEBRIEF -->
+<section class="section" id="sec-4">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <div class="section-title-wrap">
+      <div class="section-badge badge-gold">📊 Lesson Wrap-up · 4 min</div>
+      <h2 class="section-title">How did<br>it go?</h2>
+      <div class="section-time">⏱ Minutes 16 – 20</div>
+    </div>
+  </div>
+
+  <p class="section-desc">Use these questions to reflect on today's session. Check off each point as you discuss it with your teacher.</p>
+
+  <div class="debrief-list">
+    <div class="debrief-item" onclick="toggleCheck(this)">
+      <div class="debrief-check">✓</div>
+      <div class="debrief-text">I could fill in the missing letters without much hesitation</div>
+    </div>
+    <div class="debrief-item" onclick="toggleCheck(this)">
+      <div class="debrief-check">✓</div>
+      <div class="debrief-text">My Read Aloud felt smooth and at a natural pace</div>
+    </div>
+    <div class="debrief-item" onclick="toggleCheck(this)">
+      <div class="debrief-check">✓</div>
+      <div class="debrief-text">I used a clear structure in my Speaking answers</div>
+    </div>
+    <div class="debrief-item" onclick="toggleCheck(this)">
+      <div class="debrief-check">✓</div>
+      <div class="debrief-text">I used varied vocabulary (no repetition of the same words)</div>
+    </div>
+    <div class="debrief-item" onclick="toggleCheck(this)">
+      <div class="debrief-check">✓</div>
+      <div class="debrief-text">I filled the full time without long silences or pauses</div>
+    </div>
+  </div>
+
+  <div class="score-card">
+    <div class="score-label">Estimated starting score</div>
+    <div class="score-number">115–125</div>
+    <div class="score-sub">out of 160 (DET scale)</div>
+    <div class="score-range">This is a typical starting point for C1 speakers. With targeted preparation on <strong>lexical range</strong> and <strong>discourse structure</strong>, reaching <strong>130+</strong> is very realistic in 6–8 sessions.</div>
+  </div>
+
+
+</section>
+
+<footer>
+  <span class="footer-brand">DET Trial Lesson</span>
+  <span class="footer-note">Made by Stas Vinnikov</span>
+</footer>
+
+<script>
+  // Global lesson timer
+  let globalSeconds = 0;
+  let globalInterval = setInterval(() => {
+    globalSeconds++;
+    const m = Math.floor(globalSeconds / 60).toString().padStart(2, '0');
+    const s = (globalSeconds % 60).toString().padStart(2, '0');
+    document.getElementById('globalTimer').textContent = m + ':' + s;
+  }, 1000);
+
+  // Nav dots
+  const sections = ['sec-0','sec-1','sec-2','sec-3','sec-4'];
+  const dots = document.querySelectorAll('.nav-dot');
+
+  function updateDots() {
+    const scrollY = window.scrollY + 120;
+    let current = 0;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && el.offsetTop <= scrollY) current = i;
+    });
+    dots.forEach((d, i) => {
+      d.classList.remove('active','done');
+      if (i === current) d.classList.add('active');
+      else if (i < current) d.classList.add('done');
+    });
+  }
+  window.addEventListener('scroll', updateDots, { passive: true });
+  dots.forEach((d, i) => {
+    d.addEventListener('click', () => {
+      const el = document.getElementById(sections[i]);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Check answers
+  function checkAnswers() {
+    const inputs = document.querySelectorAll('.blank-input');
+    inputs.forEach(inp => {
+      const correct = inp.dataset.answer.toLowerCase();
+      const given = inp.value.toLowerCase().trim();
+      inp.classList.remove('correct','wrong');
+      if (given === correct) inp.classList.add('correct');
+      else inp.classList.add('wrong');
+    });
+    document.getElementById('answerReveal').classList.add('show');
+  }
+
+  // Read aloud timer
+  let readInterval = null;
+  let readSec = 30;
+  function startReadTimer() {
+    const btn = document.getElementById('readTimerBtn');
+    if (readInterval) {
+      clearInterval(readInterval);
+      readInterval = null;
+      readSec = 30;
+      document.getElementById('readTimer').textContent = '0:30';
+      document.getElementById('readProgress').style.width = '100%';
+      btn.textContent = 'Start prep ▶';
+      btn.classList.remove('running');
+      return;
+    }
+    btn.textContent = 'Reset ■';
+    btn.classList.add('running');
+    readInterval = setInterval(() => {
+      readSec--;
+      const s = readSec < 10 ? '0'+readSec : readSec;
+      document.getElementById('readTimer').textContent = '0:' + s;
+      document.getElementById('readProgress').style.width = (readSec / 30 * 100) + '%';
+      if (readSec <= 0) {
+        clearInterval(readInterval);
+        readInterval = null;
+        document.getElementById('readTimer').textContent = 'Go! 🎙';
+        document.getElementById('readProgress').style.width = '0%';
+        btn.textContent = 'Reset ■';
+      }
+    }, 1000);
+  }
+
+  // Speaking timers
+  let speakIntervals = { 1: null, 2: null };
+  let speakSec = { 1: 30, 2: 30 };
+
+  function startSpeakTimer(n) {
+    const btn = document.getElementById('speakBtn' + n);
+    const display = document.getElementById('speakTimer' + n);
+    if (speakIntervals[n]) {
+      clearInterval(speakIntervals[n]);
+      speakIntervals[n] = null;
+      speakSec[n] = 30;
+      display.textContent = '0:30';
+      btn.textContent = 'Start prep ▶';
+      btn.classList.remove('running');
+      return;
+    }
+    btn.textContent = 'Reset ■';
+    btn.classList.add('running');
+    speakIntervals[n] = setInterval(() => {
+      speakSec[n]--;
+      const s = speakSec[n] < 10 ? '0'+speakSec[n] : speakSec[n];
+      display.textContent = '0:' + s;
+      if (speakSec[n] <= 0) {
+        clearInterval(speakIntervals[n]);
+        speakIntervals[n] = null;
+        display.textContent = 'Speak! 🎙';
+        btn.textContent = 'Done ✓';
+        btn.classList.remove('running');
+      }
+    }, 1000);
+  }
+
+  // Debrief checkboxes
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+  }
+</script>
+</body>
+</html>
